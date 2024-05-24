@@ -11,7 +11,7 @@
         <h1 th:text="${board.title}"></h1>
         <div class="meta-info">
             <p class="author" th:text="'글쓴이: ' + ${board.name}"></p>
-            <p class="date" th:text="'수정일/작성일: ' + ${#temporals.format(board.created_at, 'yyyy/MM/dd/ HH:mm')}"></p>
+            <p class="date" th:text="'최근 수정일 : ' + ${#temporals.format(board.created_at, 'yyyy/MM/dd/HH:mm')}"></p>
         </div>
     </div>
 
