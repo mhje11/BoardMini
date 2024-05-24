@@ -2,18 +2,22 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>삭제</title>
+    <title>글삭제</title>
+    <link rel="stylesheet" th:href="@{/css/delete_board.css}">
 </head>
 <body>
-<h1>글삭제</h1>
-<form th:action="@{/list/deleteform/{id}(id=${board.id})}" method="post" th:object="${board}">
-    <div th:if="${error}" style="color: red;">
-        <p th:text="${error}"></p>
-    </div>
-    <label for="password">비밀번호</label>
-    <input type="password" id="password" th:field="*{password}" required>
-    <br>
-    <input type="submit" th:value="삭제">
-</form>
+<div class="container">
+    <h1>글삭제</h1>
+    <form th:action="@{/list/deleteform/{id}(id=${board.id})}" method="post" th:object="${board}">
+        <div class="field-group">
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" th:field="*{password}" required>
+        </div>
+        <div th:if="${error}" class="error">
+            <p th:text="${error}"></p>
+        </div>
+        <button type="submit" th:value="삭제">삭제</button>
+    </form>
+</div>
 </body>
 </html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>댓글 수정</title>
+    <link rel="stylesheet" th:href="@{/css/edit_comment.css}">
+</head>
+<body>
+<div class="container">
+    <h2>댓글 수정</h2>
+    <form th:action="@{/list/comments/edit/{commentId}(commentId=${comment.id})}" method="post">
+        <label for="username">이름</label>
+        <input type="text" id="username" th:field="*{comment.username}" required>
+        <br>
+        <label for="content">댓글</label>
+        <input type="text" id="content" th:field="*{comment.content}" required>
+        <input type="submit" value="수정">
+    </form>
+</div>
+</body>
+</html>

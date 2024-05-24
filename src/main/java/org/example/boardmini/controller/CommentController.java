@@ -17,11 +17,12 @@ public class CommentController {
     public String editCommentForm(@PathVariable Long commentId, Model model) {
         Comment comment = commentService.findById(commentId);
         model.addAttribute("comment", comment);
-        return "board/commenteditform";
+        return "comment/commenteditform";
     }
     @PostMapping("/comments/edit/{commentId}")
     public String editComment(@PathVariable Long commentId, @ModelAttribute Comment comment) {
         Comment existingComment = commentService.findById(commentId);
+        existingComment.setUsername(comment.getUsername());
         existingComment.setContent(comment.getContent());
         commentService.saveComment(existingComment);
         return "redirect:/list/view/" + existingComment.getBoardId();

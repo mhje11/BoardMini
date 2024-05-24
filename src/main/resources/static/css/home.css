@@ -6,7 +6,8 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    width: 600px;
+    height: 150px;
     margin: 100px auto;
     padding: 20px;
     background-color: #fff;
@@ -14,6 +15,7 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
+
 
 h1 {
     color: #333;
