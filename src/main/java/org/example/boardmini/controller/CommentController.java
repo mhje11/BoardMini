@@ -20,19 +20,40 @@ public class CommentController {
         return "comment/commenteditform";
     }
     @PostMapping("/comments/edit/{commentId}")
-    public String editComment(@PathVariable Long commentId, @ModelAttribute Comment comment) {
+    public String editComment(@PathVariable Long commentId, @ModelAttribute Comment comment, Model model) {
         Comment existingComment = commentService.findById(commentId);
-        existingComment.setUsername(comment.getUsername());
-        existingComment.setContent(comment.getContent());
-        commentService.saveComment(existingComment);
-        return "redirect:/list/view/" + existingComment.getBoardId();
+        Long boardId = existingComment.getBoardId();
+        if (existingComment.getPassword().equals(comment.getPassword())) {
+            existingComment.setUsername(comment.getUsername());
+            existingComment.setContent(comment.getContent());
+            commentService.saveComment(existingComment);
+            return "redirect:/list/view/" + boardId;
+        }
+        else {
+            model.addAttribute("comment", existingComment);
+            model.addAttribute("error", "비밀번호가 일치하지 않습니다.");
+            return "comment/commenteditform";
+        }
     }
 
     @GetMapping("/comments/delete/{commentId}")
-    public String deleteComment(@PathVariable Long commentId) {
+    public String deleteCommentForm(@PathVariable Long commentId, Model model) {
         Comment comment = commentService.findById(commentId);
-        Long boardId = comment.getBoardId();
-        commentService.deleteComment(commentId);
-        return "redirect:/list/view/" +boardId;
+        model.addAttribute("comment", comment);
+        return "comment/commentdeleteform";
+    }
+    @PostMapping("/comments/delete/{commentId}")
+    public String deleteComment(@PathVariable Long commentId, @ModelAttribute Comment comment, Model model) {
+        Comment existingComment = commentService.findById(commentId);
+        Long boardId = existingComment.getBoardId();
+        if (existingComment.getPassword().equals(comment.getPassword())) {
+            commentService.deleteComment(commentId);
+            return "redirect:/list/view/" + boardId;
+        }
+        else {
+            model.addAttribute("comment", existingComment);
+            model.addAttribute("error", "비밀번호가 일치하지 않습니다.");
+            return "comment/commentdeleteform";
+        }
     }
 }

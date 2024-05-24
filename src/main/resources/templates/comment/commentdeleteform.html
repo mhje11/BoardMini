@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>댓글 삭제</title>
+    <link rel="stylesheet" th:href="@{/css/delete_comment.css}">
+</head>
+<body>
+<div class="container">
+    <h2>댓글 삭제</h2>
+    <form th:action="@{/list/comments/delete/{commentId}(commentId=${comment.id})}" method="post">
+        <label for="username">이름</label>
+        <input type="text" id="username" th:field="*{comment.username}" required>
+        <br>
+        <label for="content">댓글</label>
+        <input type="text" id="content" th:field="*{comment.content}" required>
+        <label for="password">비밀번호</label>
+        <input type="password" id="password" th:field="*{comment.password}" required>
+        <div th:if="${error}">
+            <p th:text="${error}"></p>
+        </div>
+        <input type="submit" value="삭제">
+    </form>
+</div>
+</body>
+</html>

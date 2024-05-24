@@ -40,12 +40,23 @@
             </li>
         </ul>
 
-        <form th:action="@{/list/comments/{boardId}(boardId=${board.id})}" method="post">
-            <label for="username">이름</label>
-            <input type="text" id="username" th:field="*{newComment.username}" required>
-            <br>
-            <label for="content">댓글</label>
-            <input type="text" id="content" th:field="*{newComment.content}" required>
+        <form th:action="@{/list/comments/{boardId}(boardId=${board.id})}" method="post" class="comment-form">
+
+            <div class="form-group">
+                <div class="input-box">
+                    <label for="username">이름</label>
+                    <input type="text" id="username" th:field="*{newComment.username}" required>
+                </div>
+                <div class="input-box">
+                    <label for="password">비밀번호</label>
+                    <input type="password" id="password" th:field="*{newComment.password}" required>
+                </div>
+            </div>
+            <p>댓글</p>
+            <div class="form-group">
+                <label for="content"></label>
+                <input type="text" id="content" th:field="*{newComment.content}" required>
+            </div>
             <button type="submit">댓글 작성</button>
         </form>
     </div>

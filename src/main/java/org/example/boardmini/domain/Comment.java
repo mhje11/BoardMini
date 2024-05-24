@@ -16,5 +16,6 @@ public class Comment {
     private Long boardId;
     private String username;
     private String content;
+    private String password;
 
 }

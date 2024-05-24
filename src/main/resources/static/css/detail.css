@@ -120,7 +120,9 @@ body {
     text-decoration: underline;
 }
 
-form input[type="text"], form textarea {
+form input[type="text"],
+form input[type="password"],
+form textarea {
     width: calc(100% - 22px);
     padding: 10px;
     margin: 5px 0 10px 0;
@@ -140,4 +142,34 @@ form button {
 
 form button:hover {
     background-color: #0056b3;
+}
+
+.comment-section input[type="password"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin: 5px 0 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-group {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.input-box {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.input-box label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
