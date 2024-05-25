@@ -41,6 +41,7 @@ public class BoardController {
     public String write(@ModelAttribute Board board) {
         board.setViews(1L);
         board.setCreated_at(LocalDateTime.now());
+        board.setUpdated_at(LocalDateTime.now());
         boardService.saveBoard(board);
         return "redirect:/list";
     }
