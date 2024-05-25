@@ -23,6 +23,7 @@
         <form th:action="@{/list/like/{boardId}(boardId=${board.id})}" method="post">
             <button type="submit">좋아요</button>
             <span th:text="'좋아요 수: ' + ${board.likes}"></span>
+            <br>
         </form>
     </div>
 

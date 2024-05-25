@@ -1,5 +1,8 @@
 package org.example.boardmini.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.example.boardmini.domain.Board;
 import org.example.boardmini.domain.Comment;
@@ -11,6 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Arrays;
 
 @Controller
 @RequiredArgsConstructor
@@ -90,10 +96,24 @@ public class BoardController {
         return "redirect:/list/view/" +boardId;
     }
     @PostMapping("/like/{boardId}")
-    public String likeBoard(@PathVariable Long boardId) {
+    public String likeBoard(@PathVariable Long boardId, HttpServletRequest request, HttpServletResponse response) {
+        String ipAddress = request.getRemoteAddr();
+        String cookieName = "liked_" + boardId + "_" + ipAddress.replace(":", "-");
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(cookieName) && "true".equals(cookie.getValue())) {
+                    boardService.unlikeBoard(boardId);
+                    cookie.setValue("false");
+                    response.addCookie(cookie);
+                    return "redirect:/list/view/"+boardId;
+                }
+            }
+        }
         boardService.likeBoard(boardId);
+        Cookie likeCookie = new Cookie(cookieName, "true");
+        likeCookie.setMaxAge(60 * 60 * 24);
+        response.addCookie(likeCookie);
         return "redirect:/list/view/"+boardId;
     }
-
-
 }

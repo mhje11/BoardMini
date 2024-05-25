@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -55,4 +56,15 @@ public class BoardService {
             boardRepository.save(board);
         }
     }
+
+    @Transactional
+    public void unlikeBoard(Long boardId) {
+        Board board = boardRepository.findById(boardId).orElse(null);
+        if (board != null) {
+            Long currentLikes = board.getLikes();
+            board.setLikes(currentLikes - 1);
+            boardRepository.save(board);
+        }
+    }
+
 }
