@@ -13,6 +13,9 @@
             <p class="author" th:text="'글쓴이: ' + ${board.name}"></p>
             <p class="date" th:text="'최근 수정일 : ' + ${#temporals.format(board.created_at, 'yyyy/MM/dd/HH:mm')}"></p>
         </div>
+        <div class="views">
+            <p th:text="'조회수 : ' + ${board.views}"></p>
+        </div>
     </div>
 
     <div class="content-section">

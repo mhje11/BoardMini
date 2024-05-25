@@ -21,5 +21,6 @@ public class Board {
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
     private Long likes = 0L; //예약어여서 like 안됨
+    private Long views;
 
 }

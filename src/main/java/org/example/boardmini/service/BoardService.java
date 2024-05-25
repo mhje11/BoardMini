@@ -67,4 +67,14 @@ public class BoardService {
         }
     }
 
+    @Transactional
+    public void plusViews(Long boardId) {
+        Board board = boardRepository.findById(boardId).orElse(null);
+        if (board != null) {
+            Long currentViews = board.getViews();
+            board.setViews(currentViews + 1);
+            boardRepository.save(board);
+        }
+    }
+
 }

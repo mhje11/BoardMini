@@ -37,12 +37,14 @@ public class BoardController {
     }
     @PostMapping("/writeform")
     public String write(@ModelAttribute Board board) {
+        board.setViews(0L);
         boardService.saveBoard(board);
         return "redirect:/list";
     }
     @GetMapping("/view/{id}")
     public String viewDetail(@PathVariable Long id,Model model) {
         Board board = boardService.findBoardById(id);
+        boardService.plusViews(id);
         Iterable<Comment> comments = commentService.findByBoardId(id);
         model.addAttribute("comments", comments);
         model.addAttribute("board", board);

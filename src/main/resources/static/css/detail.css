@@ -173,3 +173,8 @@ form button:hover {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+.views {
+    text-align: left;
+    font-size: 14px;
+    color: #666;
+}
