@@ -14,9 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Arrays;
 
 @Controller
 @RequiredArgsConstructor
@@ -81,6 +78,12 @@ public class BoardController {
     public String delete(@PathVariable Long id, @ModelAttribute Board board, Model model) {
         Board existingBoard = boardService.findBoardById(id);
         if (existingBoard.getPassword().equals(board.getPassword())) {
+            Iterable<Comment> comments = commentService.findByBoardId(id);
+            if (comments != null) {
+                for (Comment comment : comments) {
+                    commentService.deleteComment(comment.getId());
+                }
+            }
             boardService.deleteBoard(id);
             return "redirect:/list";
         } else {
@@ -99,6 +102,7 @@ public class BoardController {
     public String likeBoard(@PathVariable Long boardId, HttpServletRequest request, HttpServletResponse response) {
         String ipAddress = request.getRemoteAddr();
         String cookieName = "liked_" + boardId + "_" + ipAddress.replace(":", "-");
+        //cookie 이름엔 : 들어갈수없음
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
