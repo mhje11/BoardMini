@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,11 +33,22 @@ public class BoardController {
         model.addAttribute("boards", boards);
         return "board/list";
     }
+
+    @GetMapping("/popularBoard")
+    public String popularBoard(Model model, @RequestParam(defaultValue = "1") int page,
+                               @RequestParam(defaultValue = "7") int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<Board> popularBoards = boardService.findPopularBoards(pageable);
+        model.addAttribute("boards", popularBoards);
+        return "board/popularBoards";
+    }
+
     @GetMapping("/writeform")
     public String writeForm(Model model) {
         model.addAttribute("board", new Board());
         return "board/add";
     }
+
     @PostMapping("/writeform")
     public String write(@ModelAttribute Board board) {
         board.setViews(1L);
@@ -45,8 +57,9 @@ public class BoardController {
         boardService.saveBoard(board);
         return "redirect:/list";
     }
+
     @GetMapping("/view/{id}")
-    public String viewDetail(@PathVariable Long id,Model model) {
+    public String viewDetail(@PathVariable Long id, Model model) {
         Board board = boardService.findBoardById(id);
         boardService.plusViews(id);
         Iterable<Comment> comments = commentService.findByBoardId(id);
@@ -62,6 +75,7 @@ public class BoardController {
         model.addAttribute(board);
         return "board/editform";
     }
+
     @PostMapping("/updateform/{id}")
     public String update(@PathVariable Long id, @ModelAttribute Board board, Model model) {
         Board existingBoard = boardService.findBoardById(id);
@@ -77,12 +91,14 @@ public class BoardController {
             return "board/editform";
         }
     }
+
     @GetMapping("/deleteform/{id}")
     public String deleteForm(@PathVariable Long id, Model model) {
         Board board = boardService.findBoardById(id);
         model.addAttribute("board", board);
         return "board/deleteform";
     }
+
     @PostMapping("/deleteform/{id}")
     public String delete(@PathVariable Long id, @ModelAttribute Board board, Model model) {
         Board existingBoard = boardService.findBoardById(id);
@@ -101,12 +117,14 @@ public class BoardController {
             return "board/deleteform";
         }
     }
+
     @PostMapping("/comments/{boardId}")
     public String addComment(@PathVariable Long boardId, @ModelAttribute Comment comment) {
         comment.setBoardId(boardId);
         commentService.saveComment(comment);
-        return "redirect:/list/view/" +boardId;
+        return "redirect:/list/view/" + boardId;
     }
+
     @PostMapping("/like/{boardId}")
     public String likeBoard(@PathVariable Long boardId, HttpServletRequest request, HttpServletResponse response) {
         String ipAddress = request.getRemoteAddr();
@@ -120,7 +138,7 @@ public class BoardController {
                     cookie.setValue("false");
                     response.addCookie(cookie);
                     boardService.minusViews(boardId);
-                    return "redirect:/list/view/"+boardId;
+                    return "redirect:/list/view/" + boardId;
                 }
             }
         }
@@ -129,6 +147,6 @@ public class BoardController {
         likeCookie.setMaxAge(60 * 60 * 24);
         response.addCookie(likeCookie);
         boardService.minusViews(boardId);
-        return "redirect:/list/view/"+boardId;
+        return "redirect:/list/view/" + boardId;
     }
 }

@@ -44,6 +44,12 @@ public class BoardService {
         return boardRepository.findAll(sortedByDescId);
 
     }
+    public Page<Board> findPopularBoards(Pageable pageable) {
+        PageRequest sortedByDescLikes = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                Sort.by(Sort.Direction.DESC, "likes"));
+        return boardRepository.findAll(sortedByDescLikes);
+
+    }
 
     @Transactional
     public void likeBoard(Long boardId) {

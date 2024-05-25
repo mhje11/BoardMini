@@ -2,12 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>게시글 목록</title>
+    <title>인기 게시글</title>
     <link rel="stylesheet" th:href="@{/css/board.css}">
 </head>
 <body>
 <div class="container">
-    <h1>일반글 게시판</h1>
+    <h1>인기글 게시판</h1>
     <table th:if="${!boards.empty}">
         <thead>
         <tr>
@@ -39,7 +39,7 @@
     </div>
     <div>
     <a th:href="@{/list/writeform}" class="write-link">글쓰기</a>
-    <a th:href="@{/list/popularBoard}" class="write-link">인기글</a>
+    <a th:href="@{/list}" class="write-link">일반글</a>
     </div>
 </div>
 </body>
