@@ -15,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/list")
@@ -37,7 +39,8 @@ public class BoardController {
     }
     @PostMapping("/writeform")
     public String write(@ModelAttribute Board board) {
-        board.setViews(0L);
+        board.setViews(1L);
+        board.setCreated_at(LocalDateTime.now());
         boardService.saveBoard(board);
         return "redirect:/list";
     }
@@ -62,6 +65,9 @@ public class BoardController {
     public String update(@PathVariable Long id, @ModelAttribute Board board, Model model) {
         Board existingBoard = boardService.findBoardById(id);
         if (board.getPassword().equals(existingBoard.getPassword())) {
+            board.setViews(existingBoard.getViews());
+            board.setCreated_at(existingBoard.getCreated_at());
+            board.setUpdated_at(LocalDateTime.now());
             boardService.saveBoard(board);
             return "redirect:/list";
         } else {
@@ -112,6 +118,7 @@ public class BoardController {
                     boardService.unlikeBoard(boardId);
                     cookie.setValue("false");
                     response.addCookie(cookie);
+                    boardService.minusViews(boardId);
                     return "redirect:/list/view/"+boardId;
                 }
             }
@@ -120,6 +127,7 @@ public class BoardController {
         Cookie likeCookie = new Cookie(cookieName, "true");
         likeCookie.setMaxAge(60 * 60 * 24);
         response.addCookie(likeCookie);
+        boardService.minusViews(boardId);
         return "redirect:/list/view/"+boardId;
     }
 }

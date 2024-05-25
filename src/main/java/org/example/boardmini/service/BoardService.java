@@ -25,8 +25,6 @@ public class BoardService {
 
     @Transactional
     public Board saveBoard(Board board) {
-        board.setCreated_at(LocalDateTime.now());
-        board.setUpdated_at(LocalDateTime.now());
         return boardRepository.save(board);
     }
 
@@ -76,5 +74,13 @@ public class BoardService {
             boardRepository.save(board);
         }
     }
-
+    @Transactional
+    public void minusViews(Long boardId) {
+        Board board = boardRepository.findById(boardId).orElse(null);
+        if (board != null) {
+            Long currentViews = board.getViews();
+            board.setViews(currentViews - 1);
+            boardRepository.save(board);
+        }
+    }
 }
