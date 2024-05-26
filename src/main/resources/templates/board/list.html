@@ -38,8 +38,15 @@
         </ul>
     </div>
     <div>
-    <a th:href="@{/list/writeform}" class="write-link">글쓰기</a>
-    <a th:href="@{/list/popularBoard}" class="write-link">인기글</a>
+        <a th:href="@{/list/writeform}" class="write-link">글쓰기</a>
+        <a th:href="@{/list/popularBoard}" class="write-link">인기글</a>
+    </div>
+    <div style="position: absolute; bottom: 20px; left: 20px;">
+        <div th:if="${isLoggedIn}">
+            <a th:href="@{/logout}" class="write-link">로그아웃</a>
+        </div>
+        <div th:if="${!isLoggedIn}" style="color: red;">
+        </div>
     </div>
 </div>
 </body>

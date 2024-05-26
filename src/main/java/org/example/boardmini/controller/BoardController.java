@@ -3,9 +3,11 @@ package org.example.boardmini.controller;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.boardmini.domain.Board;
 import org.example.boardmini.domain.Comment;
+import org.example.boardmini.domain.User;
 import org.example.boardmini.service.BoardService;
 import org.example.boardmini.service.CommentService;
 import org.springframework.data.domain.Page;
@@ -16,7 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,7 +28,10 @@ public class BoardController {
 
     @GetMapping
     public String boards(Model model, @RequestParam(defaultValue = "1") int page,
-                         @RequestParam(defaultValue = "7") int size) {
+                         @RequestParam(defaultValue = "7") int size, HttpSession session) {
+        User loginUser = (User) session.getAttribute("user");
+        model.addAttribute("isLoggedIn", loginUser != null);
+
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Board> boards = boardService.findAllBoards(pageable);
         model.addAttribute("boards", boards);
@@ -36,7 +40,9 @@ public class BoardController {
 
     @GetMapping("/popularBoard")
     public String popularBoard(Model model, @RequestParam(defaultValue = "1") int page,
-                               @RequestParam(defaultValue = "7") int size) {
+                               @RequestParam(defaultValue = "7") int size, HttpSession session) {
+        User loginUser = (User) session.getAttribute("user");
+        model.addAttribute("isLoggedIn", loginUser != null);
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Board> popularBoards = boardService.findPopularBoards(pageable);
         model.addAttribute("boards", popularBoards);
@@ -44,19 +50,32 @@ public class BoardController {
     }
 
     @GetMapping("/writeform")
-    public String writeForm(Model model) {
+    public String writeForm(Model model, HttpSession session) {
+        User loginUser = (User) session.getAttribute("user");
         model.addAttribute("board", new Board());
-        return "board/add";
+        if (loginUser != null) {
+            model.addAttribute("isLoggedIn", true);
+            return "board/loginadd";
+        } else {
+            return "board/add";
+        }
     }
 
+
     @PostMapping("/writeform")
-    public String write(@ModelAttribute Board board) {
+    public String write(@ModelAttribute Board board, HttpSession session) {
+        User loginUser = (User) session.getAttribute("user");
+        if (loginUser != null) {
+            board.setName(loginUser.getUsername());
+            board.setPassword(loginUser.getPassword());
+        }
         board.setViews(1L);
         board.setCreated_at(LocalDateTime.now());
         board.setUpdated_at(LocalDateTime.now());
         boardService.saveBoard(board);
         return "redirect:/list";
     }
+
 
     @GetMapping("/view/{id}")
     public String viewDetail(@PathVariable Long id, Model model) {

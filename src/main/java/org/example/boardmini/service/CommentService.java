@@ -21,6 +21,7 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
+    @Transactional(readOnly = true)
     public Comment findById(Long id) {
         return commentRepository.findById(id).orElse(null);
     }
