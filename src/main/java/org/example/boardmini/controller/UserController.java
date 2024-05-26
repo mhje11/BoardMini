@@ -52,4 +52,9 @@ public class UserController {
         session.invalidate();
         return "redirect:/";
     }
+    @GetMapping("/home")
+    public String goToHome(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
 }

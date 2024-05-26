@@ -14,6 +14,7 @@ public class User {
     @Id
     private Long id;
     @Column(value = "userId")
+    //왜 userId는 명시적으로 안적어주면 인식못하는지 잘 모르겠음
     private String userId;
     private String username;
     private String password;

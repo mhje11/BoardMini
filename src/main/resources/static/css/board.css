@@ -7,7 +7,6 @@ body {
 
 .container {
     width: 700px;
-    height: 600px;
     margin: 20px auto;
     padding: 20px;
     background-color: #fff;
@@ -77,12 +76,29 @@ li:last-child {
     border-radius: 4px;
     text-decoration: none;
     margin-top: 20px;
-    margin-right: auto;
+    margin-right: 10px;
 }
-
 
 .write-link:hover {
     background-color: #0056b3;
     transition: background-color 0.3s ease;
     text-decoration: none;
+}
+
+.button-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.bottom-links {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.bottom-links > div {
+    margin-right: 10px;
 }
