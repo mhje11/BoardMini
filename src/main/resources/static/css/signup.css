@@ -4,12 +4,16 @@ body {
     background-color: #fff; /* 전체 배경색을 흰색으로 설정 */
 }
 
-form {
+.container {
     width: 300px;
     margin: 50px auto;
     padding: 20px;
     background-color: #f4f4f4; /* 내부 컨테이너의 배경색 설정 */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    width: 100%;
 }
 
 label {
@@ -37,4 +41,9 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
     background-color: #0056b3;
+}
+
+.error-message {
+    text-align: center; /* 텍스트를 가운데 정렬 */
+    margin-top: 10px; /* 입력 폼과의 간격 조정 */
 }

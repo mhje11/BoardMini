@@ -22,7 +22,12 @@ public class UserController {
         return "user/signUp";
     }
     @PostMapping("signUp")
-    public String signUp(@ModelAttribute User user) {
+    public String signUp(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
+        User existingUser = userService.findUserByUserId(user.getUserId());
+        if (existingUser != null) {
+            redirectAttributes.addFlashAttribute("error", "이미 존재하는 사용자 ID 입니다.");
+            return "redirect:/signUp";
+        }
         userService.saveUser(user);
         return "redirect:/";
     }
@@ -33,7 +38,7 @@ public class UserController {
     }
     @PostMapping("/")
     public String login(@ModelAttribute User user, RedirectAttributes redirectAttributes, HttpSession session) {
-        User loginUserInfo = userService.findByUsernameAndPassword(user.getUserId(), user.getPassword());
+        User loginUserInfo = userService.findByUserIdAndPassword(user.getUserId(), user.getPassword());
         if (loginUserInfo != null) {
             session.setAttribute("user", loginUserInfo);
             return "redirect:/list";

@@ -7,6 +7,7 @@ spring:
     username: mhje11
     password: 9704
     driver-class-name: com.mysql.cj.jdbc.Driver
-
 server:
-  port: 8080
+  servlet:
+    session:
+      timeout: 1800

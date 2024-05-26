@@ -14,6 +14,9 @@ public class UserService {
     public User findUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
+    public User findUserByUserId(String userId) {
+        return userRepository.findUserByUserId(userId);
+    }
     @Transactional
     public void saveUser(User user) {
         userRepository.save(user);
@@ -22,7 +25,7 @@ public class UserService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
-    public User findByUsernameAndPassword(String userId, String password) {
-        return userRepository.findByUsernameAndPassword(userId, password);
+    public User findByUserIdAndPassword(String userId, String password) {
+        return userRepository.findByUserIdAndPassword(userId, password);
     }
 }
